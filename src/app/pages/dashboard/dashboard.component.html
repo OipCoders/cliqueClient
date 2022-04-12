@@ -204,10 +204,13 @@
                                         
                                         <div class="boxCommomn">
                                             <div class="leaders-div">
-                                                <h3>Group Leaders <a href="/leaders">View All</a></h3>
-                                                <div class="teammates" *ngFor="let leader of matesLeaderData.leaders">
-                                                    <img src="{{leader.user_image !='' ? imageUrl+leader.user_image : 'assets/img/defaultProfileImage.png'}}" style="height: 50px; width: 50px; object-fit: cover; border-radius: 50%; margin-right: 5px;" title="{{leader.first_name}} {{leader.last_name}}">
-                                                    <span>{{leader.last_name}}</span>
+                                                <h3>Groups <a href="/leaders">View All</a></h3>
+                                                <div class="teammates" *ngFor="let leader of matesLeaderData">
+                                                    <img src="{{leader.image_url !='' ? imageUrl+leader.image_url : 'assets/img/defaultProfileImage.png'}}" style="height: 50px; width: 50px; object-fit: cover; border-radius: 50%; margin-right: 5px;" title="{{leader.title}}">
+                                                    <span>{{leader.title}}</span>
+                                                    <span *ngIf="leader.approval == null" style="cursor:pointer;" (click)="sendGroupJoinReq(leader.id)">JOIN</span>
+                                                    <span *ngIf="leader.approval == 'pending'" >pending</span>
+                                                    <span *ngIf="leader.approval == 'approved'" style="cursor:pointer;" (click)="openRoom(leader)" >View</span>
                                                 </div>
                                             </div>
                                         </div> 

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { NotificationsService } from 'angular2-notifications';
 import { environment } from 'src/environments/environment';
+import { DynamicGroupComponent } from '../chat/dynamic-group/dynamic-group.component';
 import { ApiService } from '../services/api.service';
 
 @Component({
@@ -26,6 +27,9 @@ export class DashboardComponent implements OnInit {
   isShowPost = true;
   allGames: any = [];
   partialGames: any = [];
+  
+  @ViewChild(DynamicGroupComponent, { static: false  }) room: DynamicGroupComponent;
+  
   constructor(public apiService: ApiService, public notificationsService: NotificationsService, public router: Router) {
    
     this.loadTwitter();
@@ -158,6 +162,15 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  sendGroupJoinReq(groupId) {
+    this.apiService.sendGroupJoinReq({ groupId: groupId }).subscribe((res: any) => {
+      if (res.status) {
+        this.notificationsService.success('Success!', res.msg);
+        this.getMatesAndLeaders();
+      } else this.notificationsService.info('info!', res.msg);
+    });
+  }
+
   setUserImage() {
     var user: any = JSON.parse(localStorage.getItem('socialUserDetails'));
     if (user.user_image != '' && user.user_image != undefined) return this.imageUrl + user.user_image;
@@ -171,7 +184,8 @@ export class DashboardComponent implements OnInit {
 
   getMatesAndLeaders() {
     this.loading = true;
-    this.apiService.getRandomTeamMates().subscribe((res: any) => {
+    // this.apiService.getRandomTeamMates().subscribe((res: any) => {
+    this.apiService.getAllLeadersGroupsForUsers().subscribe((res: any) => {
       this.loading = false;
       this.matesLeaderData = res.data;
 
@@ -261,9 +275,6 @@ export class DashboardComponent implements OnInit {
     );
   }
 
-
-
-  
   getGroupsWithMembers() {
     this.loading = true;
     this.apiService.getGroupsWithMembers().subscribe((res: any) => {
@@ -272,6 +283,11 @@ export class DashboardComponent implements OnInit {
 
       console.log("getGroupsWithMembers",res.data);
     })
+  }
+
+  openRoom(roomData){
+    localStorage.setItem("groupData", JSON.stringify(roomData))
+    this.router.navigateByUrl('/room')
   }
 
 

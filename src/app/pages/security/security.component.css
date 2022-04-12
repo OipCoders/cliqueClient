@@ -1,0 +1,71 @@
+.pbt-100 {
+    padding-bottom: 100px;
+} 
+.pdt-50 {
+    padding-top: 50px;
+}
+.containerTn {
+    max-width: 80%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+/*Policy page*/
+.heading-underline h2 {
+	position: relative;
+	padding-bottom: 15px;
+	display: inline-block;
+	width: auto;
+	font-size: 40px;
+	margin-bottom: 30px;
+	font-weight: 700;
+	color: #001442
+}
+.heading-underline h2:before {
+	content: '';
+	position: absolute;
+	left: 0;
+	width: 70%;
+	border-bottom: 4px solid #30b1ae;
+	bottom: 0;
+}
+.privacy-policy p {
+	font-size: 20px;
+	line-height: 34px;
+	margin-bottom: 24px;
+}
+.privacy-policy-collect-information ul {
+	padding: 0;
+}
+.privacy-policy-collect-information ul li:before {
+	content: '-';
+	padding: 0 15px;
+}
+.privacy-policy-collect-information ul li {
+	line-height: 30px;
+	font-size: 20px;
+	list-style: none;
+	padding: 0;
+	display: flex;
+	padding-bottom: 20px;
+	color:#000;
+}
+.terms-of-use ol {
+	line-height: 48px;
+	font-size: 20px;
+	list-style-type: lower-alpha;
+	color:#000;
+	
+}
+.refund-policy ol li {
+	padding-left: 20px;
+	line-height: 30px;
+	font-size: 20px;
+	padding-bottom: 20px;
+	color:#000;
+}
+ol.roman-list {
+	list-style-type: upper-roman;
+	color:#000;
+}   

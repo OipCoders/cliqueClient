@@ -15,10 +15,12 @@ export class GroupListComponent implements OnInit {
   config: any;
   baseUrlForImage = environment.baseUrlForImage;
   loading = false;
+  userRoll = JSON.parse(localStorage.getItem("socialUserDetails")).user_roll;
+  
   constructor(public apiService: ApiService, public notificationsService: NotificationsService) { }
 
   ngOnInit(): void {
-    
+    console.log(this.userRoll);
     this.getMatesAndLeaders();
 
     // document.getElementById("showBoard").classList.remove('d-block');
