@@ -23,12 +23,13 @@ export class ProfileComponent implements OnInit {
   isLeader = false;
   loading = false;
   userImage;
+  userRoll = '';
   ngOnInit(): void {
     document.getElementById("showBoard").classList.remove('d-block');
     document.getElementById("showBoard").classList.add('d-none');
     this.setUserImage();
-
-
+    var user: any = JSON.parse(localStorage.getItem('socialUserDetails'));
+    this.userRoll = user.user_roll;
     this.getMatesAndLeaders();
 
   }
@@ -107,7 +108,8 @@ export class ProfileComponent implements OnInit {
         if (this.files.length > 0) formData.append('file', this.files[0]);
         var isFile = this.files.length > 0 ? 'yes' : 'no'
         this.loading = true;
-        this.apiService.updateProfile(isFile, this.userInfo, formData).subscribe((res: any) => {
+        console.log(this.userInfo);
+        this.apiService.updateProfile(this.userRoll,isFile, this.userInfo, formData).subscribe((res: any) => {
           this.loading = false;
           if (res.status) {
             this.isShowImage = false;

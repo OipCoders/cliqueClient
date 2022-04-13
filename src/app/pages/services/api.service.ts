@@ -110,12 +110,20 @@ export class ApiService {
     return this.http.post(this.baseUrl + '/social/seenPost', data);
   }
   
-  updateProfile(isFile, userInfo, formData) {
-    return this.http.post(this.baseUrl + '/user/updateProfile', formData, {
-      reportProgress: true,
-      responseType: 'json',
-      headers: new HttpHeaders({
+  updateProfile(userRoll,isFile, userInfo, formData) {
+    var tempObj = {};
+    if(userRoll == 'Client'){
+      tempObj = {
         isFile: isFile,
+        accountType: userRoll,
+        name: userInfo.name,
+        address: userInfo.address,
+        city:  userInfo.city,
+      }
+    } else {
+      tempObj = {
+        isFile: isFile,
+        accountType: userRoll,
         name: userInfo.name,
         address: userInfo.address,
         city:  userInfo.city,
@@ -124,7 +132,14 @@ export class ApiService {
         show_profile: userInfo.show_profile,
         trial_amount: userInfo.trial_amount,
         trial_days: userInfo.trial_days,
-      })
+      }
+    }
+    return this.http.post(this.baseUrl + '/user/updateProfile', formData, {
+      reportProgress: true,
+      responseType: 'json',
+      headers: new HttpHeaders(
+        tempObj
+      )
     });
   }
   
