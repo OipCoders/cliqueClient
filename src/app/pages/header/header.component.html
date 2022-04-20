@@ -13,7 +13,7 @@
                             <!-- <i class="fas fa-search"></i>
                             <input type="text" name="search" placeholder="Search..."> -->
                         </div>
-                        <button [routerLink]="['/postForm']"  class="addNew">
+                        <button [routerLink]="['/postForm']"  class="addNew" *ngIf="userRoll == 'SuperAdmin'">
                             <i class="fas fa-plus"></i> 
                             <span>Add New</span>
                         </button>

@@ -11,39 +11,49 @@ import { GoogleLoginProvider } from "angularx-social-login";
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-  
+
   matesLeaderData: any = {};
   loading = false;
   userInfo: any = {};
   isFormShow = false;
   isCodeBox = false;
   mobileNumber = '';
-  otpCode='';
-  constructor( public apiService: ApiService, public notificationsService: NotificationsService, public router: Router, public authService: SocialAuthService ) { }
+  otpCode = '';
+  
+  constructor(public apiService: ApiService, public notificationsService: NotificationsService, public router: Router, public authService: SocialAuthService) { }
 
   ngOnInit(): void {
 
-    
+
     this.getMatesAndLeaders();
-    
+
   }
 
   signUp() {
 
     if (this.apiService.isEmpty(this.userInfo.name)) return this.notificationsService.error('Error!', 'Please enter your name');
-  //  if (this.apiService.isEmpty(this.userInfo.email)) return this.notificationsService.error('Error!', 'Please enter your email');
+    //  if (this.apiService.isEmpty(this.userInfo.email)) return this.notificationsService.error('Error!', 'Please enter your email');
     if (!this.apiService.validateEmail(this.userInfo.email)) return this.notificationsService.error('Error!', 'Invalid email');
 
-    if (this.apiService.isEmpty(this.userInfo.address)) return this.notificationsService.error('Error!', 'Please select date of birth');
+    if (this.apiService.isEmpty(this.userInfo.dob)) return this.notificationsService.error('Error!', 'Please select date of birth');
     // if (this.apiService.isEmpty(this.userInfo.city)) return this.notificationsService.error('Error!', 'Please select your city');
-     if (this.apiService.isEmpty(this.userInfo.leader)) return this.notificationsService.error('Error!', 'Please select leader or follower');
+    if (this.apiService.isEmpty(this.userInfo.leader)) return this.notificationsService.error('Error!', 'Please select leader or follower');
     // if (this.apiService.isEmpty(this.userInfo.favourite_team)) return this.notificationsService.error('Error!', 'Please select your favourite team');
     // if (this.apiService.isEmpty(this.userInfo.favourite_player)) return this.notificationsService.error('Error!', 'Please select your favourite player'); 
-    if (this.apiService.isEmpty(this.userInfo.password)) return this.notificationsService.error('Error!', 'Enter your password');   
+    if (this.apiService.isEmpty(this.userInfo.password)) return this.notificationsService.error('Error!', 'Enter your password');
     if (this.apiService.isEmpty(this.userInfo.rePassword)) return this.notificationsService.error('Error!', 'Enter your confirm password');
     if (this.userInfo.password == this.userInfo.rePassword) {
-    if(this.mobileNumber.length > 16) return this.notificationsService.error('Error!', 'Phone number length should be under 15 digits');
+      if (this.mobileNumber.length > 16) return this.notificationsService.error('Error!', 'Phone number length should be under 15 digits');
       this.userInfo.phone = this.mobileNumber;
+      console.log(this.userInfo);
+      if (this.userInfo.leader == 'Follower') this.userInfo.leader = 'Client'
+      if (this.userInfo.favourite_player) this.userInfo.favourite_player;
+      else this.userInfo.favourite_player = '';
+      if (this.userInfo.favourite_team) this.userInfo.favourite_team;
+      else this.userInfo.favourite_team = '';
+      if (this.userInfo.city  ) this.userInfo.city;
+      else this.userInfo.city = '';
+
       this.apiService.register(this.userInfo).subscribe((res: any) => {
         if (res.status) {
           this.userInfo = {};
@@ -55,10 +65,10 @@ export class RegisterComponent implements OnInit {
   }
 
   signInWithGoogle(): void {
-    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then((info: any)=>{
-      this.apiService.socialSignInSignUp(info).subscribe((res: any)=>{
+    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then((info: any) => {
+      this.apiService.socialSignInSignUp(info).subscribe((res: any) => {
         console.log(res);
-        if(res.status){
+        if (res.status) {
           this.notificationsService.success('Success!', res.msg);
           localStorage.setItem('socialUserDetails', JSON.stringify(res.data));
           this.router.navigateByUrl('/dashboard');
@@ -69,43 +79,43 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  
+
 
   signOut(): void {
     this.authService.signOut();
   }
 
-  sendOtpCode(){
-    if(!this.apiService.isEmpty(this.mobileNumber)){
-      this.apiService.sendOtpCode({phonenumber: this.mobileNumber, channel: "sms"}).subscribe((res: any)=>{
-        if(res.status){
+  sendOtpCode() {
+    if (!this.apiService.isEmpty(this.mobileNumber)) {
+      this.apiService.sendOtpCode({ phonenumber: this.mobileNumber, channel: "sms" }).subscribe((res: any) => {
+        if (res.status) {
           this.isCodeBox = true;
         } else this.notificationsService.error('Error!', res.msg);
       })
     } else this.notificationsService.error('Please enter mobile number.');
   }
-  
-  verifyOtpCode(){
-    if(!this.apiService.isEmpty(this.otpCode)){
-      this.apiService.verifyOtpCode({phonenumber: this.mobileNumber, code: this.otpCode}).subscribe((res: any)=>{
-        if(res.status){
+
+  verifyOtpCode() {
+    if (!this.apiService.isEmpty(this.otpCode)) {
+      this.apiService.verifyOtpCode({ phonenumber: this.mobileNumber, code: this.otpCode }).subscribe((res: any) => {
+        if (res.status) {
           this.isFormShow = true;
         } else this.notificationsService.error('Error!', res.msg);
       })
     } else this.notificationsService.error('Please enter otp code.');
   }
 
-  
-getMatesAndLeaders() {
-  this.loading = true;
-  this.apiService.getLead().subscribe((res: any) => {
-    this.loading = false;
-    this.matesLeaderData = res.data;
-  })
-}
+
+  getMatesAndLeaders() {
+    this.loading = true;
+    this.apiService.getLead().subscribe((res: any) => {
+      this.loading = false;
+      this.matesLeaderData = res.data;
+    })
+  }
 
 }
 
 
 
-  
+

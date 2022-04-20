@@ -92,7 +92,7 @@
                      </div>
                   </div>
                </div>
-               <div class="btn-m  text-center sign-in col-lg-12">
+               <div class="btn-m  text-center sign-in col-lg-12" *ngIf="userData.user_roll =='Client'">
                   <a>
                      <button (click)="getFreeTrial(leaderData.user_id)" class="mr-2" ><span>Get Your Free Trial</span></button>
                      <button (click)="makePayment((leaderData.trial_amount)?leaderData.trial_amount:300)" ><span>Paynow</span></button>

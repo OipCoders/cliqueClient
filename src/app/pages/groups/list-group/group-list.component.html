@@ -56,9 +56,9 @@
                                                 
                                                 <td  class="welComeSearch text-center" >   
                                                     <div class=" d-flex justify-content-center">
-                                                        <div class="col-3 ">
+                                                        <div class="col-3 " *ngIf="userRoll == 'SuperAdmin'">
                                                             <button class="btn btn-primary btn-config addNew" (click)="updateGroupById(group.id, group.leader_id)">   <span>Update</span> </button>                                                    
-                                                        </div>                                                                                                      
+                                                        </div>                                                                                                          
                                                         <div class="col-3 ">
                                                             <button [routerLink]="['/group/'] + group.id" class="btn btn-primary btn-config addNew" >   <span>Edit</span> </button>                                                
                                                         </div>                                                                                     

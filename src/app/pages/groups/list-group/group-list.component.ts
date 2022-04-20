@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NotificationsService } from 'angular2-notifications';
 import { environment } from 'src/environments/environment';
 import { ApiService } from '../../services/api.service';
-
 @Component({
   selector: 'app-post-list',
   templateUrl: './group-list.component.html',
@@ -17,10 +17,10 @@ export class GroupListComponent implements OnInit {
   loading = false;
   userRoll = JSON.parse(localStorage.getItem("socialUserDetails")).user_roll;
   
-  constructor(public apiService: ApiService, public notificationsService: NotificationsService) { }
+  constructor(public apiService: ApiService, public notificationsService: NotificationsService, public router:Router) { }
 
   ngOnInit(): void {
-    console.log(this.userRoll);
+    if(this.userRoll == 'Client') this.router.navigateByUrl('/dashboard');
     this.getMatesAndLeaders();
 
     // document.getElementById("showBoard").classList.remove('d-block');

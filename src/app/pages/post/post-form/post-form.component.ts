@@ -19,6 +19,7 @@ export class PostFormComponent implements OnInit {
   isEdit = false;
   baseUrlForImage = environment.baseUrlForImage;
   loading = false;
+  is_disabled = false;
   constructor( public apiService: ApiService, public notificationsService: NotificationsService, public activatedRoute: ActivatedRoute, public router: Router ) {
 
     setInterval(() => {
@@ -56,8 +57,10 @@ export class PostFormComponent implements OnInit {
         const formData: FormData = new FormData();    
         formData.append('file', this.files[0]);
         this.loading = true;
+        this.is_disabled = true;
         this.apiService.sendPost(body, formData).subscribe((res: any)=>{
           this.loading = false;
+          this.is_disabled = false;
           console.log(res);
           if(res.status){
             this.notificationsService.success('Success!', res.msg);
@@ -97,8 +100,10 @@ export class PostFormComponent implements OnInit {
     const formData: FormData = new FormData();    
     formData.append('file', this.files[0]);
     this.loading = true;
+    this.is_disabled = true;
     this.apiService.updatePost(temp, formData).subscribe((res: any)=>{
       this.loading = false;
+      this.is_disabled = false;
       console.log(res);
       if(res.status){
         this.notificationsService.success('Success!', res.msg);

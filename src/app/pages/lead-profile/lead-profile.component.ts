@@ -20,6 +20,7 @@ export class LeadProfileComponent implements OnInit {
   loading = false;
   leaderId;
   userImage;
+  userData: any = JSON.parse(localStorage.getItem('socialUserDetails'));
   trialData: any = {};
   handler: any = null;
   paymentHandler: any = null;

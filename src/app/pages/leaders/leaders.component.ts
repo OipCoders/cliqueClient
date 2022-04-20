@@ -18,7 +18,8 @@ export class LeadersComponent implements OnInit {
   matesLeaderData: any = {};
   today;
   leaderId;
-  constructor(public apiService: ApiService, public notificationsService: NotificationsService, public router: Router,public activatedRoute: ActivatedRoute) {
+  config: any;
+  constructor(public apiService: ApiService, public notificationsService: NotificationsService, public router: Router, public activatedRoute: ActivatedRoute) {
     setInterval(() => {
       this.today = new Date()
     }, 1000);
@@ -29,15 +30,15 @@ export class LeadersComponent implements OnInit {
 
 
     this.leaderId = this.activatedRoute.params['value']['id'];
-    
-    if(this.leaderId){
+
+    if (this.leaderId) {
 
       this.getLeadById(this.leaderId);
 
-      console.log("one leader" );
+      console.log("one leader");
 
-    }else{
-      console.log("more than one leaders" );
+    } else {
+      console.log("more than one leaders");
     }
 
     this.getMatesAndLeaders();
@@ -48,14 +49,19 @@ export class LeadersComponent implements OnInit {
 
 
 
-  
+
   getMatesAndLeaders() {
     this.loading = true;
     // this.apiService.getRandomTeamMates().subscribe((res: any) => {
     this.apiService.getAllLeadersGroupsForUsers().subscribe((res: any) => {
-      console.log("res",res);
+      console.log("res", res);
       this.loading = false;
       this.matesLeaderData = res.data;
+      this.config = {
+        itemsPerPage: 10,
+        currentPage: 1,
+        totalItems: this.matesLeaderData.length ? this.matesLeaderData.length : 0
+      };
     })
   }
 
@@ -70,19 +76,22 @@ export class LeadersComponent implements OnInit {
 
 
 
-  
+
   getLeadById(id) {
     this.loading = true;
     this.apiService.getLeadById(id).subscribe((res: any) => {
-      console.log("res",res);
+      console.log("res", res);
       this.loading = false;
       this.matesLeaderData = res.data;
     })
   }
 
 
-  filterProfileShow(arr){
-      return arr.filter(x => x.show_profile == 1);
+  filterProfileShow(arr) {
+    return arr.filter(x => x.show_profile == 1);
   }
 
+  pageChanged(event: any) {
+    this.config.currentPage = event;
+  }
 }
